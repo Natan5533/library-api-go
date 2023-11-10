@@ -1,0 +1,17 @@
+version : '1'
+services:
+  database:
+    image: postgres:14
+    container_name: "library_api_go_db"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: library_api_go_db
+    volumes:
+      - library-api-go-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+volumes: 
+  library-api-go-data:
+    driver: local
+
