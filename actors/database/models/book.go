@@ -7,4 +7,5 @@ type Book struct {
 
 	Title    string `gorm:"type:varchar(100);not null"`
 	AuthorId int    `gorm:"not null"`
+	Author   Author
 }
