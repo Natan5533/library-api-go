@@ -3,8 +3,9 @@ package main
 import (
 	"log/slog"
 
+	"github.com/Natan5533/library-api-go/actors/api"
 	"github.com/Natan5533/library-api-go/actors/database"
-	"github.com/Natan5533/library-api-go/actors/database/repo"
+	"github.com/Natan5533/library-api-go/infra"
 )
 
 func main() {
@@ -12,7 +13,7 @@ func main() {
 
 	db := database.Connect()
 
-	LibraryRepo := repo.InitLibraryRepo(db)
+	container := infra.InitContainer(db)
 
-	LibraryRepo.Create("Kalunga", "Paulista Avenue")
+	api.InitServer(container)
 }
