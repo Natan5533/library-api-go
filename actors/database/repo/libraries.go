@@ -19,7 +19,7 @@ func (repo *LibraryRepo) Create(name, address string) (int, error) {
 
 	tx := repo.db.Create(libraryModel)
 	if tx.Error != nil {
-		slog.Error("Deu ruim")
+		slog.Error("[REPO] Error creating a Library")
 		return 0, tx.Error
 	}
 
