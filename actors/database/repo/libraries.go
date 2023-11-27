@@ -36,3 +36,12 @@ func (repo *LibraryRepo) GetById(id int) (*models.Library, error) {
 
 	return &library, nil
 }
+
+func (repo *LibraryRepo) Delete(id int) error {
+	var library models.Library
+	if tx := repo.db.Delete(&library, id); tx.Error != nil {
+		return tx.Error
+	}
+
+	return nil
+}
