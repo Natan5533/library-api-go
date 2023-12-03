@@ -28,10 +28,10 @@ func (repo *LibraryRepo) Create(name, address string) (int, error) {
 
 func (repo *LibraryRepo) GetById(id int) (*models.Library, error) {
 	var library models.Library
-	tx := repo.db.First(&library, id)
+	result := repo.db.First(&library, id)
 
-	if tx.Error != nil {
-		return nil, tx.Error
+	if result.Error != nil {
+		return nil, result.Error
 	}
 
 	return &library, nil
@@ -39,8 +39,9 @@ func (repo *LibraryRepo) GetById(id int) (*models.Library, error) {
 
 func (repo *LibraryRepo) Delete(id int) error {
 	var library models.Library
-	if tx := repo.db.Delete(&library, id); tx.Error != nil {
-		return tx.Error
+	err := repo.db.Delete(&library, id).Error
+	if err != nil {
+		return err
 	}
 
 	return nil

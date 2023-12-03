@@ -9,23 +9,19 @@ import (
 	"gorm.io/gorm"
 )
 
+var db *gorm.DB
+var repo *LibraryRepo
+
+func TestMain(m *testing.M) {
+	db = database.Connect()
+	repo = InitLibraryRepo(db)
+	m.Run()
+	TeardownDB(db, repo)
+}
+
 func TestInsert(t *testing.T) {
-	db := database.Connect()
-	repo := InitLibraryRepo(db)
-
-	t.Run("Sucessfull insert", func(t *testing.T) {
-		expectedLibraryId := 1
-
-		id, err := repo.Create("Test", "3 Street")
-		library, _ := repo.GetById(id)
-
-		assert.Equal(t, expectedLibraryId, int(library.ID))
-		assert.Nil(t, err)
-	})
-
 	t.Run("Success when we have a valid id", func(t *testing.T) {
 		expectedName := "Kalunga"
-		expectedId := 2
 		expectedAddress := "3 Street"
 
 		id, err := repo.Create("Kalunga", "3 Street")
@@ -34,41 +30,55 @@ func TestInsert(t *testing.T) {
 		}
 		library, err := repo.GetById(id)
 
-		assert.Equal(t, expectedId, int(library.ID))
 		assert.Equal(t, expectedName, library.Name)
 		assert.Equal(t, expectedAddress, library.Address)
 		assert.Nil(t, err)
 	})
+}
 
-	t.Run("Error when Library not exists", func(t *testing.T) {
-		expectedError := "record not found"
-		library, err := repo.GetById(3)
+func TestGetById(t *testing.T) {
+	t.Run("Successful fetch", func(t *testing.T) {
+		id, _ := repo.Create("Kalunga", "3 Street")
+		address, err := repo.GetById(id)
 
-		assert.Equal(t, expectedError, err.Error())
-		assert.Nil(t, library)
+		assert.Nil(t, err)
+		assert.Equal(t, "Kalunga", address.Name)
+
 	})
+	t.Run("Return error when library not found", func(t *testing.T) {
+		nonExistantId := 347878
+		address, err := repo.GetById(nonExistantId)
 
+		assert.Nil(t, address)
+		assert.Equal(t, "record not found", err.Error())
+	})
+}
+
+func TestDelete(t *testing.T) {
 	t.Run("Success deleting a library", func(t *testing.T) {
 		expectedGetError := "record not found"
-		err := repo.Delete(1)
-		_, errGet := repo.GetById(1)
+		libraryId, _ := repo.Create("Kalunga", "3 Street")
+		err := repo.Delete(libraryId)
+		_, errGet := repo.GetById(libraryId)
 
 		assert.Nil(t, err)
 		assert.Equal(t, expectedGetError, errGet.Error())
 	})
 
 	t.Run("Error deleting a library", func(t *testing.T) {
-		expectedError := "record not found"
-		err := repo.Delete(3)
-
-		assert.Equal(t, expectedError, err.Error())
+		nonExistantId := 347878
+		err := repo.Delete(nonExistantId)
+		assert.Equal(t, "a", err)
 	})
-
-	TeardownDB(db)
-
 }
 
-func TeardownDB(db *gorm.DB) {
+func InitDB() (db *gorm.DB, repo *LibraryRepo) {
+	a := database.Connect()
+	return a, InitLibraryRepo(db)
+}
+
+func TeardownDB(db *gorm.DB, repo *LibraryRepo) {
+	repo.db.Delete(models.Library{})
 	db.Migrator().DropTable(models.Library{})
 	sql, _ := db.DB()
 	sql.Close()
