@@ -67,18 +67,36 @@ func TestDelete(t *testing.T) {
 
 	t.Run("Error deleting a library", func(t *testing.T) {
 		nonExistantId := 347878
+		expectedGetError := "record not found"
 		err := repo.Delete(nonExistantId)
-		assert.Equal(t, "a", err)
+		assert.Equal(t, expectedGetError, err.Error())
 	})
 }
 
-func InitDB() (db *gorm.DB, repo *LibraryRepo) {
-	a := database.Connect()
-	return a, InitLibraryRepo(db)
+func TestUpdate(t *testing.T) {
+	t.Run("Success updating a library", func(t *testing.T) {
+		libraryId, _ := repo.Create("Kalunga", "3 Street")
+		library, _ := repo.GetById(libraryId)
+		library.Name = "New Kalunga"
+		err := repo.Update(libraryId, library)
+
+		updatedLibrary, _ := repo.GetById(libraryId)
+
+		assert.Nil(t, err)
+		assert.Equal(t, "New Kalunga", updatedLibrary.Name)
+	})
+
+	t.Run("Error updating a library", func(t *testing.T) {
+		nonExistantId := 347878
+		expectedError := "record not found"
+
+		err := repo.Update(nonExistantId, &models.Library{})
+
+		assert.Equal(t, expectedError, err.Error())
+	})
 }
 
 func TeardownDB(db *gorm.DB, repo *LibraryRepo) {
-	repo.db.Delete(models.Library{})
 	db.Migrator().DropTable(models.Library{})
 	sql, _ := db.DB()
 	sql.Close()

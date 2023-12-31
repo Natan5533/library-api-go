@@ -8,9 +8,13 @@ import (
 type LibrariesRepo interface {
 	Create(name string, address string) (int, error)
 	GetById(id int) (*models.Library, error)
+	Delete(id int) error
+	Update(id int, libraryParams *models.Library) error
 }
 
 type LibrariesService interface {
 	Create(name string, address string) (int, error)
 	GetById(id int) (*adapters.LibraryGetByIdResponse, error)
+	Delete(id int) error
+	Update(id int, libraryParams *adapters.UpdateLibraryParams) error
 }

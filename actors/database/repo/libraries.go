@@ -39,10 +39,30 @@ func (repo *LibraryRepo) GetById(id int) (*models.Library, error) {
 
 func (repo *LibraryRepo) Delete(id int) error {
 	var library models.Library
-	err := repo.db.Delete(&library, id).Error
+
+	_, err := repo.GetById(id)
 	if err != nil {
 		return err
 	}
 
+	result := repo.db.Delete(&library, id)
+	if result.Error != nil {
+		return result.Error
+	}
+
+	return nil
+}
+
+func (repo *LibraryRepo) Update(id int, libraryParams *models.Library) error {
+	var library models.Library
+	tx := repo.db.First(&library, id)
+	if tx.Error != nil {
+		return tx.Error
+	}
+
+	result := repo.db.Model(&library).Updates(libraryParams)
+	if result.Error != nil {
+		return result.Error
+	}
 	return nil
 }

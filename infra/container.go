@@ -3,14 +3,14 @@ package infra
 import (
 	"github.com/Natan5533/library-api-go/actors/api/handlers"
 	"github.com/Natan5533/library-api-go/actors/database/repo"
-	"github.com/Natan5533/library-api-go/core/services/librarysrv"
+	"github.com/Natan5533/library-api-go/core/services/libraries"
 	"gorm.io/gorm"
 )
 
 type Container struct {
 	LibraryRepo repo.LibraryRepo
 
-	LibraryService librarysrv.Service
+	LibraryService libraries.Service
 
 	LibraryHandler handlers.LibraryHandler
 }
@@ -18,7 +18,7 @@ type Container struct {
 func InitContainer(db *gorm.DB) *Container {
 	libraryRepo := repo.InitLibraryRepo(db)
 
-	libraryService := librarysrv.New(libraryRepo)
+	libraryService := libraries.New(libraryRepo)
 
 	libraryHandler := handlers.NewHandler(libraryService)
 

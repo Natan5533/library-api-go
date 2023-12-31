@@ -1,4 +1,4 @@
-package librarysrv
+package libraries
 
 import (
 	"errors"
@@ -38,6 +38,32 @@ func (service *Service) GetById(id int) (*adapters.LibraryGetByIdResponse, error
 		Address: library.Address,
 		Authors: []adapters.AuthorsResponse{},
 	}, nil
+}
+
+func (service *Service) Delete(id int) error {
+	err := service.libraryRepo.Delete(id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (service *Service) Update(id int, params *adapters.UpdateLibraryParams) error {
+	library, err := service.libraryRepo.GetById(id)
+	if err != nil {
+		return err
+	}
+
+	if params.Name != "" {
+		library.Name = params.Name
+	}
+
+	if params.Address != "" {
+		library.Address = params.Address
+	}
+
+	service.libraryRepo.Update(id, library)
+	return nil
 }
 
 func checkCreateParams(name string, address string) error {
