@@ -11,3 +11,11 @@ type Author struct {
 	LibraryId int    `gorm:"not null"`
 	Books     []Book `gorm:"foreignKey:AuthorId"`
 }
+
+func NewAuthor(email string, name string, libraryId int) *Author {
+	return &Author{
+		Email:     email,
+		Name:      name,
+		LibraryId: libraryId,
+	}
+}

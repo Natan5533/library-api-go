@@ -36,7 +36,7 @@ func (service *Service) GetById(id int) (*adapters.LibraryGetByIdResponse, error
 		Id:      int(library.ID),
 		Name:    library.Name,
 		Address: library.Address,
-		Authors: []adapters.AuthorsResponse{},
+		Authors: library.Authors,
 	}, nil
 }
 

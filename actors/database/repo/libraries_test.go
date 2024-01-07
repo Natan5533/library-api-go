@@ -3,21 +3,9 @@ package repo
 import (
 	"testing"
 
-	"github.com/Natan5533/library-api-go/actors/database"
 	"github.com/Natan5533/library-api-go/actors/database/models"
 	"github.com/stretchr/testify/assert"
-	"gorm.io/gorm"
 )
-
-var db *gorm.DB
-var repo *LibraryRepo
-
-func TestMain(m *testing.M) {
-	db = database.Connect()
-	repo = InitLibraryRepo(db)
-	m.Run()
-	TeardownDB(db, repo)
-}
 
 func TestInsert(t *testing.T) {
 	t.Run("Success when we have a valid id", func(t *testing.T) {
@@ -94,10 +82,4 @@ func TestUpdate(t *testing.T) {
 
 		assert.Equal(t, expectedError, err.Error())
 	})
-}
-
-func TeardownDB(db *gorm.DB, repo *LibraryRepo) {
-	db.Migrator().DropTable(models.Library{})
-	sql, _ := db.DB()
-	sql.Close()
 }

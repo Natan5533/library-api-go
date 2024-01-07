@@ -1,10 +1,10 @@
 package adapters
 
 type LibraryGetByIdResponse struct {
-	Id      int               `json:"id"`
-	Name    string            `json:"name"`
-	Address string            `json:"address"`
-	Authors []AuthorsResponse `json:"authors"`
+	Id      int    `json:"id"`
+	Name    string `json:"name"`
+	Address string `json:"address"`
+	Authors any    `json:"authors"`
 }
 
 type AuthorsResponse struct {
