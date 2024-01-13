@@ -3,6 +3,7 @@ package handlers
 import (
 	"strconv"
 
+	adapters "github.com/Natan5533/library-api-go/core/domain/adpaters"
 	"github.com/Natan5533/library-api-go/core/ports"
 	"github.com/gin-gonic/gin"
 )
@@ -63,4 +64,50 @@ func (handler AuthorHandler) GetById(ctx *gin.Context) {
 	ctx.JSON(200, gin.H{
 		"author": author,
 	})
+}
+
+func (handler AuthorHandler) Delete(ctx *gin.Context) {
+	id, err := GetId(ctx)
+	if err != nil {
+		ctx.JSON(500, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	err = handler.authorService.Delete(id)
+	if err != nil {
+		ctx.JSON(400, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	ctx.JSON(204, nil)
+}
+
+func (handler AuthorHandler) Update(ctx *gin.Context) {
+	id, err := GetId(ctx)
+	if err != nil {
+		ctx.JSON(500, gin.H{
+			"error": err.Error(),
+		})
+	}
+
+	var params adapters.UpdateAuthorParams
+	if err := ctx.ShouldBindJSON(&params); err != nil {
+		ctx.JSON(400, gin.H{
+			"error": err.Error()})
+		return
+	}
+
+	err = handler.authorService.Update(id, &params)
+	if err != nil {
+		ctx.JSON(400, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	ctx.JSON(204, nil)
 }

@@ -30,11 +30,42 @@ func (repo *AuthorRepo) Create(email, name string, libraryId int) (int, error) {
 
 func (repo *AuthorRepo) GetById(id int) (*models.Author, error) {
 	var author models.Author
-	result := repo.db.First(&author, id)
+	result := repo.db.Preload("Books").First(&author, id)
 
 	if result.Error != nil {
 		return nil, result.Error
 	}
 
 	return &author, nil
+}
+
+func (repo *AuthorRepo) Delete(id int) error {
+	var author models.Author
+
+	_, err := repo.GetById(id)
+	if err != nil {
+		return err
+	}
+
+	result := repo.db.Delete(&author, id)
+	if result.Error != nil {
+		return result.Error
+	}
+
+	return nil
+}
+
+func (repo *AuthorRepo) Update(id int, authorParams *models.Author) error {
+	var author models.Author
+	tx := repo.db.First(&author, id)
+	if tx.Error != nil {
+		return tx.Error
+	}
+
+	tx = repo.db.Model(&author).Updates(authorParams)
+	if tx.Error != nil {
+		return tx.Error
+	}
+
+	return nil
 }

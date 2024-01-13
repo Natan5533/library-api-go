@@ -26,10 +26,31 @@ func (service *Service) GetById(id int) (*adapters.AuthorGetByIdResponse, error)
 	if err != nil {
 		return nil, err
 	}
-	return &adapters.AuthorGetByIdResponse{
-		Id:    int(author.ID),
-		Email: author.Email,
-		Name:  author.Name,
-		Books: []adapters.Books{},
-	}, nil
+	return adapters.BuildAuthorGetByIdResponse(author), nil
+}
+
+func (service *Service) Delete(id int) error {
+	err := service.authorRepo.Delete(id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (service *Service) Update(id int, params *adapters.UpdateAuthorParams) error {
+	author, err := service.authorRepo.GetById(id)
+	if err != nil {
+		return err
+	}
+
+	if params.Name != "" {
+		author.Name = params.Name
+	}
+
+	if params.Email != "" {
+		author.Email = params.Email
+	}
+
+	service.authorRepo.Update(id, author)
+	return nil
 }

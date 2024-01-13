@@ -33,6 +33,6 @@ func library(engine *gin.RouterGroup, lh handlers.LibraryHandler) {
 func author(engine *gin.RouterGroup, ah handlers.AuthorHandler) {
 	engine.POST("/author/:library_id", ah.CreateAuthor)
 	engine.GET("/author/:id", ah.GetById)
-	// engine.DELETE("/author/:id", ah.Delete)
-	// engine.PUT("/author/:id", ah.Update)
+	engine.DELETE("/author/:id", ah.Delete)
+	engine.PUT("/author/:id", ah.Update)
 }

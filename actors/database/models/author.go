@@ -5,10 +5,10 @@ import "gorm.io/gorm"
 type Author struct {
 	gorm.Model
 
-	Id        int    `gorm:"primaryKey;autoIncrement"`
+	ID        int    `gorm:"primaryKey;autoIncrement"`
 	Email     string `gorm:"type:varchar(100);not null"`
 	Name      string `gorm:"type:varchar(100);not null"`
-	LibraryId int    `gorm:"not null"`
+	LibraryID int    `gorm:"not null"`
 	Books     []Book `gorm:"foreignKey:AuthorId"`
 }
 
@@ -16,6 +16,6 @@ func NewAuthor(email string, name string, libraryId int) *Author {
 	return &Author{
 		Email:     email,
 		Name:      name,
-		LibraryId: libraryId,
+		LibraryID: libraryId,
 	}
 }
