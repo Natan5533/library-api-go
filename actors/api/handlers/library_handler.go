@@ -94,7 +94,9 @@ func (handler LibraryHandler) Update(ctx *gin.Context) {
 
 	var params adapters.UpdateLibraryParams
 	if err := ctx.ShouldBindJSON(&params); err != nil {
-		ctx.JSON(500, gin.H{"error": "Internal Server Error"})
+		ctx.JSON(400, gin.H{
+			"error": err.Error()})
+		return
 	}
 
 	err = handler.libraryService.Update(id, &params)

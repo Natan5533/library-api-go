@@ -28,7 +28,7 @@ func (repo *LibraryRepo) Create(name, address string) (int, error) {
 
 func (repo *LibraryRepo) GetById(id int) (*models.Library, error) {
 	var library models.Library
-	result := repo.db.First(&library, id)
+	result := repo.db.Preload("Authors").First(&library, id)
 
 	if result.Error != nil {
 		return nil, result.Error

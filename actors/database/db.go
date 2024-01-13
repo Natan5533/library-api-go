@@ -15,16 +15,16 @@ func Connect() *gorm.DB {
 		Logger: logger.Default.LogMode(logger.Silent),
 	})
 	if err != nil {
-		slog.Error("[DB] Deu problema na conexão")
+		slog.Error("[DB] Could not connect to database")
 		panic(err)
 	}
 
 	if err := db.AutoMigrate(models.Library{}, models.Author{}, models.Book{}); err != nil {
-		slog.Error("[DB] Deu problema na migração")
+		slog.Error("[DB] Error migrating")
 		panic(err)
 	}
 
-	slog.Info("Conectado com sucesso!")
+	slog.Info("Successfully connected to database")
 
 	return db
 }

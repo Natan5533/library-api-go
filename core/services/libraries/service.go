@@ -32,12 +32,7 @@ func (service *Service) GetById(id int) (*adapters.LibraryGetByIdResponse, error
 	if err != nil {
 		return nil, err
 	}
-	return &adapters.LibraryGetByIdResponse{
-		Id:      int(library.ID),
-		Name:    library.Name,
-		Address: library.Address,
-		Authors: library.Authors,
-	}, nil
+	return adapters.BuildLibraryGetByIdResponse(library), nil
 }
 
 func (service *Service) Delete(id int) error {

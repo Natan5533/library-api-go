@@ -3,23 +3,49 @@ package repo
 import (
 	"testing"
 
+	"github.com/Natan5533/library-api-go/actors/database"
 	"github.com/Natan5533/library-api-go/actors/database/models"
 	"github.com/stretchr/testify/assert"
+	"gorm.io/gorm"
 )
+
+var repo *LibraryRepo
+
+var db *gorm.DB
+
+func TestMain(m *testing.M) {
+	db = database.Connect()
+	repo = InitLibraryRepo(db)
+	m.Run()
+	TeardownDB(db)
+}
+
+func TeardownDB(db *gorm.DB) {
+	db.Migrator().DropTable(models.Library{}, models.Author{}, models.Book{})
+	sql, _ := db.DB()
+	sql.Close()
+}
 
 func TestInsert(t *testing.T) {
 	t.Run("Success when we have a valid id", func(t *testing.T) {
 		expectedName := "Kalunga"
 		expectedAddress := "3 Street"
+		expectedAuthorName := "Natan"
 
-		id, err := repo.Create("Kalunga", "3 Street")
+		libraryID, err := repo.Create("Kalunga", "3 Street")
 		if err != nil {
 			panic(err)
 		}
-		library, err := repo.GetById(id)
+
+		authorModel := models.NewAuthor("", "Natan", libraryID)
+
+		db.Create(authorModel)
+		library, err := repo.GetById(libraryID)
+		author := library.Authors[0]
 
 		assert.Equal(t, expectedName, library.Name)
 		assert.Equal(t, expectedAddress, library.Address)
+		assert.Equal(t, expectedAuthorName, author.Name)
 		assert.Nil(t, err)
 	})
 }
