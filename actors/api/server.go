@@ -12,10 +12,10 @@ func InitServer(container *infra.Container) {
 	engine := gin.Default()
 
 	apiV1 := engine.Group("/api/v1")
-	{
-		library(apiV1, container.LibraryHandler)
-		author(apiV1, container.AuthorsHandler)
-	}
+
+	library(apiV1, container.LibraryHandler)
+	author(apiV1, container.AuthorsHandler)
+	book(apiV1, container.BookHandler)
 
 	if err := engine.Run(); err != nil {
 		slog.Error("Error on run server")
@@ -35,4 +35,11 @@ func author(engine *gin.RouterGroup, ah handlers.AuthorHandler) {
 	engine.GET("/author/:id", ah.GetById)
 	engine.DELETE("/author/:id", ah.Delete)
 	engine.PUT("/author/:id", ah.Update)
+}
+
+func book(engine *gin.RouterGroup, bh handlers.BooksHandler) {
+	engine.POST("/book/:author_id", bh.CreateBook)
+	engine.GET("/book/:id", bh.GetBookById)
+	engine.DELETE("/book/:id", bh.Delete)
+	engine.PUT("/book/:id", bh.UpdateBook)
 }
