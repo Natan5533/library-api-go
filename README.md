@@ -1,6 +1,16 @@
-# library-api-go WIP 
+# library-api-go 
 
-TODO: context and arch example
+## Context
+
+Functional project with the aim of improving my knowledge of Golang and Hexagonal architecture.
+
+## Architecture
+
+I chose to use the principle of ports and adapters to build this project.
+
+> Note there are several improvements to be made here, but with what we have today we can add other types of Actors (Drivers and Driven) without having to modify anything in the packages that are in the core and this validates the project and the definitions of the chosen architecture.
+
+![image](https://github.com/Natan5533/library-api-go/assets/86797382/01f63370-756a-4779-ac10-efeb899fde1e)
 
 ## Run localy 
 ### Specifications:
@@ -77,11 +87,13 @@ Response body:
 
 > I'm too lazy to add the other routes so good luck discovering it, see Gin-debug output to verify all routes available.
 
+-----
 
 
+# Next steps:
 
-### Draft
-![image](https://github.com/Natan5533/library-api-go/assets/86797382/01f63370-756a-4779-ac10-efeb899fde1e)
+1#
+![Alt](docs/image.png)
+Services should not know or use actor structures so we must do dependency inversion using Adpaters
 
-![image](https://github.com/Natan5533/library-api-go/assets/86797382/6946344b-fbe1-470b-ad67-7c1d37de9645)
 
