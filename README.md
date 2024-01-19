@@ -81,5 +81,7 @@ Response body:
 
 
 ### Draft
+![image](https://github.com/Natan5533/library-api-go/assets/86797382/01f63370-756a-4779-ac10-efeb899fde1e)
+
 ![image](https://github.com/Natan5533/library-api-go/assets/86797382/6946344b-fbe1-470b-ad67-7c1d37de9645)
 
