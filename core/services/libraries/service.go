@@ -3,7 +3,7 @@ package libraries
 import (
 	"errors"
 
-	adapters "github.com/Natan5533/library-api-go/core/domain/adpaters"
+	"github.com/Natan5533/library-api-go/core/domain/adapters"
 	"github.com/Natan5533/library-api-go/core/ports"
 )
 

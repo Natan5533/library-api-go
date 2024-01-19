@@ -2,7 +2,7 @@ package ports
 
 import (
 	"github.com/Natan5533/library-api-go/actors/database/models"
-	adapters "github.com/Natan5533/library-api-go/core/domain/adpaters"
+	"github.com/Natan5533/library-api-go/core/domain/adapters"
 )
 
 type LibrariesRepo interface {

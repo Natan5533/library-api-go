@@ -3,7 +3,7 @@ package handlers
 import (
 	"strconv"
 
-	adapters "github.com/Natan5533/library-api-go/core/domain/adpaters"
+	"github.com/Natan5533/library-api-go/core/domain/adapters"
 	"github.com/Natan5533/library-api-go/core/ports"
 	"github.com/gin-gonic/gin"
 )

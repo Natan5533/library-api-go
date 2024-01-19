@@ -6,7 +6,7 @@ import (
 	"github.com/Natan5533/library-api-go/actors/database"
 	"github.com/Natan5533/library-api-go/actors/database/models"
 	"github.com/Natan5533/library-api-go/actors/database/repo"
-	adapters "github.com/Natan5533/library-api-go/core/domain/adpaters"
+	"github.com/Natan5533/library-api-go/core/domain/adapters"
 	"github.com/stretchr/testify/assert"
 	"gorm.io/gorm"
 )
